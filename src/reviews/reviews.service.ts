@@ -1,22 +1,19 @@
 import { Injectable, Logger } from "@nestjs/common";
 import { CreateReviewDto } from "./dto";
 import { randomUUID } from "node:crypto";
-
-interface CreateReviewResult {
-  job_id: string;
-  status: "pending" | "processing" | "completed" | "failed";
-  estimated_time: string;
-  created_at: Date;
-}
+import { CreateReviewResult, JobStatusResponse, ReviewJob } from "./interfaces";
 
 @Injectable()
 export class ReviewsService {
   private readonly logger = new Logger(ReviewsService.name);
 
   // Mock storage para simular jobs
-  private readonly jobs = new Map<string, any>();
+  private readonly jobs = new Map<string, ReviewJob>();
 
-  createReview(createReviewDto: CreateReviewDto): CreateReviewResult {
+  // eslint-disable-next-line @typescript-eslint/require-await
+  async createReview(
+    createReviewDto: CreateReviewDto
+  ): Promise<CreateReviewResult> {
     const startTime = Date.now();
 
     this.logger.log(
@@ -127,8 +124,26 @@ export class ReviewsService {
       id,
       status: job.status,
       created_at: job.created_at,
-      empresa_id: job.review.empresa_id,
+      company_id: job.review.company_id,
     }));
+  }
+
+  // eslint-disable-next-line @typescript-eslint/require-await
+  async getJobStatus(
+    job_id: string
+  ): Promise<Partial<JobStatusResponse> | null> {
+    const job = this.jobs.get(job_id);
+    if (!job) {
+      return null;
+    }
+
+    return {
+      job_id: job.id,
+      status: job.status,
+      created_at: job.created_at,
+      estimated_completion: job.estimated_completion,
+      result: job.result,
+    };
   }
 
   // Método para cleanup - remover jobs antigos

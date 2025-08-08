@@ -2,7 +2,7 @@ export interface ReviewJob {
   id: string;
   review: {
     text: string;
-    empresa_id: string;
+    company_id: string;
     metadata?: Record<string, any>;
   };
   status: "pending" | "processing" | "completed" | "failed";
@@ -21,4 +21,11 @@ export interface JobStatusResponse {
   created_at: Date;
   estimated_completion: Date;
   result?: any;
+}
+
+export interface CreateReviewResult {
+  job_id: string;
+  status: "pending" | "processing" | "completed" | "failed";
+  estimated_time: string;
+  created_at: Date;
 }

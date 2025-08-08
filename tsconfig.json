@@ -20,5 +20,8 @@
     "paths": {
       "@/*":["./src/*"]
     },
-  }
+  },"include": [
+    "src",
+    "jest.config.js"
+  ]
 }
