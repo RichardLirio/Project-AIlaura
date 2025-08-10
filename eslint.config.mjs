@@ -10,6 +10,7 @@ export default tseslint.config(
       "commitlint.config.js",
       "dist/**",
       "jest.config.js",
+      "coverage/**",
     ],
   },
   eslint.configs.recommended,
