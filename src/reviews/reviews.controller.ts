@@ -36,8 +36,10 @@ export class ReviewsController {
     status: 429,
     description: "Rate limit exceeded - too many requests",
   })
-  createReview(@Body() createReviewDto: CreateReviewDto): ReviewResponseDto {
-    const result = this.reviewsService.createReview(createReviewDto);
+  async createReview(
+    @Body() createReviewDto: CreateReviewDto
+  ): Promise<ReviewResponseDto> {
+    const result = await this.reviewsService.createReview(createReviewDto);
 
     return {
       success: true,
